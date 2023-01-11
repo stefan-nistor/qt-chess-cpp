@@ -1,7 +1,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include "LoginWidget.h"
-#include "utility.h"
+#include "Session.h"
 
 auto LoginWidget::create() -> Drawable & {
 
@@ -78,17 +78,17 @@ auto LoginWidget::handlePushButton(const QString &operation) -> int {
 
     try {
         validateCredentials(u, p);
+        auto session = Session("user", operation.toStdString());
+        session.writeString(u.toStdString());
+        session.writeString(p.toStdString());
 
-        writeString("user", 0);
-        writeString(operation.toStdString(), 0);
-        writeString(u.toStdString(), 0);
-        writeString(p.toStdString(), 0);
-
-        auto responseStatusCode = readInt(0);
-        auto responseMessage = readString(0);
-        auto uuid = readInt(0);
+        auto responseStatusCode = session.readInt();
+        auto responseMessage = session.readString();
+        auto uuid = session.readInt();
 
         if (responseStatusCode == 200 || responseStatusCode == 201) {
+            this->uuid = uuid;
+            emit connected();
             return uuid;
         } else {
             QMessageBox::warning(this, operation, "Invalid credentials");

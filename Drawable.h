@@ -4,7 +4,7 @@
 #include <QWidget>
 
 class Drawable : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 public:
 
     explicit Drawable(QWidget *parent = nullptr) : QWidget(parent) {}

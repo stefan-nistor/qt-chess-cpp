@@ -1,5 +1,8 @@
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include "LobbyFinderWidget.h"
+#include "Session.h"
+
 
 auto LobbyFinderWidget::create() -> Drawable & {
 
@@ -12,7 +15,9 @@ auto LobbyFinderWidget::create() -> Drawable & {
     this->mainLayout = new QHBoxLayout();
     this->pushButtonLayout = new QVBoxLayout();
 
-    return * this;
+    this->refreshTimer = new QTimer();
+
+    return *this;
 }
 
 auto LobbyFinderWidget::place() -> Drawable & {
@@ -26,7 +31,7 @@ auto LobbyFinderWidget::place() -> Drawable & {
 
     this->setLayout(mainLayout);
 
-    return * this;
+    return *this;
 }
 
 auto LobbyFinderWidget::customize() -> Drawable & {
@@ -39,9 +44,73 @@ auto LobbyFinderWidget::customize() -> Drawable & {
     this->pushButtonLayout->setContentsMargins(25, 0, 25, 0);
     this->pushButtonLayout->setAlignment(Qt::AlignBottom);
 
-    return * this;
+    this->refreshTimer->start(50);
+
+    return *this;
 }
 
 auto LobbyFinderWidget::connectWidgets() -> Drawable & {
-    return * this;
+
+    connect(this->lobbyList, &QListWidget::itemClicked, [this] {
+        this->lobbyId = ((LobbyWidget *) this->lobbyList->itemWidget(lobbyList->currentItem()))->getId();
+    });
+
+    connect(this->refreshTimer, &QTimer::timeout, [this] {
+        this->handleFetchLobbies();
+    });
+
+    connect(this->joinLobbyButton, &QPushButton::clicked, [this] {
+        this->handleJoinLobby(lobbyId);
+    });
+
+    connect(this->disconnectButton, &QPushButton::clicked, [this] {
+
+    });
+
+    return *this;
+}
+
+auto LobbyFinderWidget::handleFetchLobbies() -> void {
+
+    try {
+
+        auto session = Session("lobby", "queryAll");
+        session.writeInt(this->uuid);
+
+        int responseStatusCode = session.readInt();
+        std::string responseMessage = session.readString();
+        int lobbyListSize = session.readInt();
+
+        if (responseStatusCode != 200) {
+            throw std::runtime_error(responseMessage);
+        }
+
+        while (lobbyListSize--) {
+            auto lobby = new LobbyWidget(this);
+            lobby->setId(session.readInt());
+            lobby->getName()->setText(QString::fromStdString(session.readString()));
+            lobby->getJoinedPlayers()->setText(QString::fromStdString(session.readString()));
+
+            auto item = new QListWidgetItem(lobbyList);
+            lobbyList->addItem(item);
+            lobbyList->setItemWidget(item, lobby);
+        }
+    }
+    catch (std::runtime_error const &e) {
+        QMessageBox::warning(this, "Warning", e.what());
+    }
+
+}
+
+auto LobbyFinderWidget::handleJoinLobby(int lobbyId) -> void {
+    try {
+        auto session = Session("lobby", "join");
+        session.writeInt(this->uuid);
+        session.writeInt(lobbyId);
+
+        int responseStatusCode = session.readInt();
+        std::string responseMessage = session.readString();
+    } catch (std::runtime_error const & e ){
+        QMessageBox::warning(this, "Warning", e.what());
+    }
 }

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-auto readInt (int socket) -> int {
+static auto readInt (int socket) -> int {
 
     int value;
     auto readByteCount = read ( socket, & value, sizeof (int) );
@@ -22,7 +22,7 @@ auto readInt (int socket) -> int {
     return value;
 }
 
-auto readString (int socket) ->  string {
+static auto readString (int socket) ->  string {
 
     auto length = readInt(socket);
     string value;
@@ -41,7 +41,7 @@ auto readString (int socket) ->  string {
     return value;
 }
 
-auto writeInt (int value, int socket) -> void {
+static auto writeInt (int value, int socket) -> void {
 
     auto writtenByteCount = write ( socket, & value, sizeof (int) );
 
@@ -50,7 +50,7 @@ auto writeInt (int value, int socket) -> void {
     }
 }
 
-auto writeString (string const & value, int socket) -> void {
+static auto writeString (string const & value, int socket) -> void {
 
     auto length = value.length() + 1;
 
