@@ -1,13 +1,14 @@
 #include <QApplication>
+#include "GameWidget.h"
+#include "GameView.h"
 #include "MainWidget.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    LobbyFinderWidget app;
-
+    MainWidget app;
+    app.resize(1280, 920);
     app.initialize();
-    app.resize(1280, 720);
     app.show();
 
     return QApplication::exec();

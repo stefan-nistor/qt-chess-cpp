@@ -8,6 +8,7 @@
 #include "LobbyFinderWidget.h"
 
 class MainWidget : public Drawable{
+Q_OBJECT
 private:
 
     int uuid = 0;
@@ -23,6 +24,12 @@ public:
     auto place() -> Drawable & override;
     auto customize() -> Drawable & override;
     auto connectWidgets() -> Drawable & override;
+
+    auto initialize() -> Drawable & override {
+        this->create().place().customize().connectWidgets();
+        this->loginWidget->initialize();
+        return * this;
+    }
 
 
 };

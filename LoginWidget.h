@@ -7,7 +7,9 @@
 #include <QPushButton>
 #include "Drawable.h"
 
+
 class LoginWidget : public Drawable{
+Q_OBJECT
 private:
 
     int uuid = 0;
@@ -35,7 +37,16 @@ public:
 
     static auto validateCredentials(const QString& u, const QString & p) -> bool;
     auto handlePushButton(const QString & operation) -> int;
+
+    auto initialize() -> Drawable & override {
+        this->create().place().customize().connectWidgets();
+        return * this;
+    }
+
     int getUuid() const;
+
+signals:
+    void connected();
 
 };
 
