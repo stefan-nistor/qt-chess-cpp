@@ -37,5 +37,16 @@ auto MainWidget::connectWidgets() -> Drawable & {
         this->loginWidget->show();
     });
 
+    connect(this->lobbyFinderWidget, & LobbyFinderWidget::gameStarted, [this]{
+
+        if(gameId==0) {
+            this->gameId = lobbyFinderWidget->getGameId();
+            this->gameView = new GameView();
+            this->mainLayout->removeWidget(lobbyFinderWidget);
+            this->mainLayout->addWidget(gameView);
+        }
+
+    });
+
     return * this;
 }

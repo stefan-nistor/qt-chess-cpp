@@ -6,14 +6,17 @@
 #include "Drawable.h"
 #include "LoginWidget.h"
 #include "LobbyFinderWidget.h"
+#include "GameView.h"
 
 class MainWidget : public Drawable{
 Q_OBJECT
 private:
 
     int uuid = 0;
+    int gameId = 0;
     LoginWidget * loginWidget;
     LobbyFinderWidget * lobbyFinderWidget;
+    GameView * gameView;
     QLayout * mainLayout;
 
 public:

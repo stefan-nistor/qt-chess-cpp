@@ -4,6 +4,8 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QTimer>
+#include <QLineEdit>
+#include <unordered_map>
 #include "Drawable.h"
 #include "LobbyWidget.h"
 
@@ -14,11 +16,18 @@ private:
 
     int uuid;
     int lobbyId;
+    int gameId = 0;
     QListWidget * lobbyList;
+    std::unordered_map<int, LobbyWidget *> lobbyMap;
 
+    QLabel * currentLobbyStatus;
+    QLabel * currentLobbyName;
+    QLineEdit * lobbyName;
     QPushButton * joinLobbyButton;
     QPushButton * createLobbyButton;
     QPushButton * disconnectButton;
+
+    QPushButton * startGameButton;
 
     QLayout * mainLayout;
     QLayout * pushButtonLayout;
@@ -34,14 +43,27 @@ public:
     auto connectWidgets() -> Drawable & override;
 
     auto handleFetchLobbies() -> void;
+
     auto handleJoinLobby(int lobbyId) -> void;
+    auto handleCreateLobby() -> void;
+    auto handleDisconnect() -> void;
+    auto handleCurrentLobbyState(int lobbyId) -> void;
+    auto handleStartGame(int lobbyId) -> void;
+
+    auto joinLobby(int lobbyId) -> void;
 
     auto inline setUuid(int uuid) -> void {
         this->uuid = uuid;
     }
 
+    auto inline getGameId() const -> int {
+        return this->gameId;
+    }
+
+
 signals:
     void disconnected();
+    void gameStarted();
 
 };
 
