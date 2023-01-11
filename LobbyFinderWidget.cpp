@@ -64,7 +64,10 @@ auto LobbyFinderWidget::connectWidgets() -> Drawable & {
     });
 
     connect(this->disconnectButton, &QPushButton::clicked, [this] {
-
+        auto session = Session("user", "disconnect");
+        this->refreshTimer->stop();
+        session.writeInt(this->uuid);
+        emit disconnected();
     });
 
     return *this;

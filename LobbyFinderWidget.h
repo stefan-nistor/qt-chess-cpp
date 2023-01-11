@@ -9,6 +9,7 @@
 
 
 class LobbyFinderWidget : public Drawable{
+    Q_OBJECT
 private:
 
     int uuid;
@@ -38,6 +39,9 @@ public:
     auto inline setUuid(int uuid) -> void {
         this->uuid = uuid;
     }
+
+signals:
+    void disconnected();
 
 };
 
