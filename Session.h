@@ -7,7 +7,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define DEV
+//#define DEV
 
 #ifdef DEV
 #define IP "192.168.100.47"
@@ -26,7 +26,7 @@ public:
         this->socket = ::socket(AF_INET, SOCK_STREAM, 0);
         sockaddr_in a{};
         a.sin_family = AF_INET;
-        a.sin_port = htons(35600);
+        a.sin_port = htons(35601);
         a.sin_addr.s_addr = inet_addr(IP);
         if(socket == -1)
             throw std::runtime_error("Failed to initialize socket");

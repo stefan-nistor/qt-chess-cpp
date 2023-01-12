@@ -1,12 +1,11 @@
 #ifndef QT_CHESS_CPP_MAINWIDGET_H
 #define QT_CHESS_CPP_MAINWIDGET_H
 
-
 #include <QWidget>
 #include "Drawable.h"
 #include "LoginWidget.h"
 #include "LobbyFinderWidget.h"
-#include "GameView.h"
+#include "BoardView.h"
 
 class MainWidget : public Drawable{
 Q_OBJECT
@@ -16,7 +15,7 @@ private:
     int gameId = 0;
     LoginWidget * loginWidget;
     LobbyFinderWidget * lobbyFinderWidget;
-    GameView * gameView;
+    BoardView * boardView;
     QLayout * mainLayout;
 
 public:

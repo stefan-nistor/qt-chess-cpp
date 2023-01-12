@@ -21,6 +21,7 @@ auto MainWidget::customize() -> Drawable & {
 }
 
 auto MainWidget::connectWidgets() -> Drawable & {
+
     connect(this->loginWidget, &LoginWidget::connected, [this]{
         this->uuid = loginWidget->getUuid();
         this->loginWidget->hide();
@@ -41,9 +42,14 @@ auto MainWidget::connectWidgets() -> Drawable & {
 
         if(gameId==0) {
             this->gameId = lobbyFinderWidget->getGameId();
-            this->gameView = new GameView();
+            this->uuid = lobbyFinderWidget->getUuid();
+            this->boardView = new BoardView(uuid, gameId);
+            this->boardView->fetchPiecesPositions();
+//            this->gameView->setGameId(gameId);
+//            this->gameView->setUserId(uuid);
+
             this->mainLayout->removeWidget(lobbyFinderWidget);
-            this->mainLayout->addWidget(gameView);
+            this->mainLayout->addWidget(boardView);
         }
 
     });

@@ -1,12 +1,15 @@
 #include <QApplication>
-#include "MainWidget.h"
+#include "BoardView.h"
+
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    MainWidget app;
+    BoardView app;
     app.resize(1280, 920);
-    app.initialize();
+    app.placeTiles();
+    app.placePiece(10,1,1);
+//    app.placePiece(0,0,0);
     app.show();
 
     return QApplication::exec();

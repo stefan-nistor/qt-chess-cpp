@@ -19,8 +19,6 @@ auto LobbyFinderWidget::create() -> Drawable & {
     this->mainLayout = new QHBoxLayout();
     this->pushButtonLayout = new QVBoxLayout();
 
-
-
     this->refreshTimer = new QTimer();
 
     return *this;
@@ -79,7 +77,6 @@ auto LobbyFinderWidget::connectWidgets() -> Drawable & {
         this->handleFetchLobbies();
         if(lobbyId){
             this->handleCurrentLobbyState(lobbyId);
-//            this->handleStartGame(lobbyId);
         }
     });
 
@@ -163,6 +160,7 @@ auto LobbyFinderWidget::handleJoinLobby(int lobbyId) -> void {
     }
 }
 
+// TODO break warning loop when joined in lobby
 auto LobbyFinderWidget::handleDisconnect() -> void {
     auto session = Session("user", "disconnect");
     this->refreshTimer->stop();
@@ -221,7 +219,6 @@ auto LobbyFinderWidget::joinLobby(int lobbyId) -> void {
     }
 }
 
-#include "GameView.h"
 auto LobbyFinderWidget::handleCurrentLobbyState(int lobbyId) -> void {
     try {
         auto session = Session("lobby", "queryCurrent");
@@ -240,7 +237,6 @@ auto LobbyFinderWidget::handleCurrentLobbyState(int lobbyId) -> void {
         }
 
         if(responseStatus == 308){
-
             emit gameStarted();
         }
 

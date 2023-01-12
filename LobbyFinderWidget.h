@@ -43,7 +43,6 @@ public:
     auto connectWidgets() -> Drawable & override;
 
     auto handleFetchLobbies() -> void;
-
     auto handleJoinLobby(int lobbyId) -> void;
     auto handleCreateLobby() -> void;
     auto handleDisconnect() -> void;
@@ -58,6 +57,10 @@ public:
 
     auto inline getGameId() const -> int {
         return this->gameId;
+    }
+
+    auto inline getUuid() const -> int {
+        return this->uuid;
     }
 
 
