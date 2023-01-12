@@ -6,12 +6,13 @@
 
 class Tile : public QGraphicsRectItem{
     int row, col;
+    QBrush brush;
+
 public:
     explicit Tile(int i, int j, QGraphicsItem * parent = nullptr) : QGraphicsRectItem(parent){
         this->row = i;
         this->col = j;
 
-        QBrush brush;
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(this->getColor());
         this->setBrush(brush);
@@ -30,6 +31,13 @@ public:
             else
                 return {196, 178, 140}; //white
         }
+    }
+
+    auto setHighlight() -> void {
+//        QBrush brush;
+//        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::cyan);
+        this->setBrush(brush);
     }
 
 };

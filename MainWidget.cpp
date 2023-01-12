@@ -44,7 +44,6 @@ auto MainWidget::connectWidgets() -> Drawable & {
             this->gameId = lobbyFinderWidget->getGameId();
             this->uuid = lobbyFinderWidget->getUuid();
             this->boardView = new BoardView(uuid, gameId);
-            this->boardView->fetchPiecesPositions();
 //            this->gameView->setGameId(gameId);
 //            this->gameView->setUserId(uuid);
 
